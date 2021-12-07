@@ -1,0 +1,47 @@
+stages:
+  - test
+  - bump_version
+  - build
+  - Lint
+
+lint-source:
+  stage: Lint
+  only:
+      - cicd
+  script:
+    - swiftlint
+
+before_script:
+  - source "$HOME/.rvm/scripts/rvm"
+  - export LC_ALL=en_US.UTF-8
+  - export LANG=en_US.UTF-8
+  - bundle install
+
+unit_test:
+    stage: test
+    only:
+      - merge_requests
+    script:
+      - bundle exec fastlane unit_tests
+    artifacts:
+      reports:
+        junit: fastlane/test_output/*.junit
+
+bump_version:
+  stage: bump_version
+  only:
+    refs:
+      - develop
+  script:
+    - bundle exec fastlane bump_version_number
+
+build_project:
+    stage: build
+    only:
+      refs:
+        - develop
+    script:
+      - bundle exec fastlane build
+    artifacts:
+      paths:
+        - build/*.ipa

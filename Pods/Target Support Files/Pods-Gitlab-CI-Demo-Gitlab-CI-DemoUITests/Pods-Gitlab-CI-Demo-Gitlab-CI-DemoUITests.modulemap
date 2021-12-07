@@ -1,0 +1,6 @@
+framework module Pods_Gitlab_CI_Demo_Gitlab_CI_DemoUITests {
+  umbrella header "Pods-Gitlab-CI-Demo-Gitlab-CI-DemoUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
